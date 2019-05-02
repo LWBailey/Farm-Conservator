@@ -1,0 +1,37 @@
+﻿@model IEnumerable<SLUIDBModels.FarmModel>
+
+
+@{
+    ViewBag.Title = "Farms";
+}
+
+<h2>Farms</h2>
+
+<table class="table">
+    <tr>
+
+        <th>
+            @Html.Display("Name")
+        </th>
+        <th>
+            @Html.Display("Description")
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+    <tr>
+        <td>
+            @Html.DisplayFor(ModelItem => item.FarmName)
+        </td>
+        <td>
+            @Html.DisplayFor(ModelItem => item.Description)
+        </td>
+
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id = item.ID })
+        </td>
+    </tr>
+    }
+
+</table>
