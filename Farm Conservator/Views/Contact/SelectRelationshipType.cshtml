@@ -1,0 +1,14 @@
+﻿@model SLUIDBModels.AddContactRequest 
+
+<h3>Please select a relationship type for this contact</h3>
+
+@using (Html.BeginForm("AddContact", "Contact", FormMethod.Get))
+{
+
+    @Html.DropDownListFor(m => m.RelationshipTypeID, new List<SelectListItem>
+                      { new SelectListItem{Text="Primary", Value="1"},
+                        new SelectListItem{Text="Owner", Value="2"},
+                        new SelectListItem{Text="Other", Value="3"}}, "Please select")
+
+    <input type="submit" value="Add Contact" />
+}

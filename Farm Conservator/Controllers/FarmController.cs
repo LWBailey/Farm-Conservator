@@ -15,15 +15,16 @@ namespace Farm_Conservator.Controllers
     {
         private static readonly HttpClient Client = new HttpClient();
 
-      
+
 
         //Get All Farms and display as list
         public async Task<ActionResult> Farms()
-        {                                       
-            return View( await GetFarmList());
-        
+        {
+            return View(await GetFarmList());
+
         }
 
+        [Route("farm/edit/{id}")]
         public async Task<ActionResult> Edit(int? id)
         {
             if (id == null)
@@ -39,7 +40,9 @@ namespace Farm_Conservator.Controllers
                 return HttpNotFound();
             }
 
-                 
+            ViewBag.PriorityList = new List<string> { "Very High", "High", "Medium", "Low" };
+
+
             return View(FarmToEdit);
         }
 
@@ -70,11 +73,40 @@ namespace Farm_Conservator.Controllers
 
 
 
+
             }
 
 
 
         }
-       
+
+        public async Task<int> GetFarmObjectID(int farmID)
+        {
+
+            string API = "http://localhost:54082/API/Farm/";
+
+            using (var Request = new HttpRequestMessage())
+            {
+
+                Request.RequestUri = new Uri(API + $"object/{farmID}");
+                Request.Method = HttpMethod.Get;
+
+
+                using (var response = await Client.SendAsync(Request))
+                {
+                    string content = await response.Content.ReadAsStringAsync();
+                    
+                    int.TryParse(content, out int FarmID);
+
+                    return FarmID;
+
+                }
+
+
+
+
+            }
+
+        }
     }
 }

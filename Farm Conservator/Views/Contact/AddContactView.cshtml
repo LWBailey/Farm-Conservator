@@ -1,0 +1,107 @@
+﻿@model List<SLUIDBModels.ContactSearchResult>
+
+
+@{
+    ViewBag.Title = "Add Contact";
+}
+
+<h2>Add Contact</h2>
+
+<div class="form-horizontal">
+
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+    @using (Html.BeginForm("ContactSearch", "Contact", FormMethod.Get))
+    {
+
+        <div class="form-group">
+            @Html.Hidden("objectID", (int)ViewBag.ObjectID);
+        </div>
+        <div class="form-group">
+            @Html.Label("IRISID", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBox("IRISID", null, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Last Name", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBox("LastName", null, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("FirstName", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBox("FirstName", null, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("ContactType", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBox("ContactType", null, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </div>
+
+
+        <input type="submit" value="Search" />
+        <br />
+        <br />
+        <br />
+
+        if (Model != null)
+        {
+            <table class="table">
+
+                <tr>
+                    <th>
+                        @Html.DisplayName("IRISID")
+                    </th>
+                    <th>
+                        @Html.DisplayName("First Name")
+                    </th>
+                    <th>
+                        @Html.DisplayName("Last Name")
+                    </th>
+                    <th>
+                        @Html.DisplayName("Address")
+                    </th>
+
+                    <th>
+                        @Html.DisplayName("")
+                    </th>
+
+                </tr>
+                @foreach (var item in Model)
+                {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.IrisContactID)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name.Split(' ')[0])
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name.Split(' ')[item.Name.Split(' ').Length - 1])
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Address)
+                    </td>
+
+                    <td>
+                        @Html.ActionLink("Add", "Modal", new { contactRequest = new SLUIDBModels.AddContactRequest { ObjectID = (int)ViewBag.ObjectID, RelationshipTypeID = 0, IRISID = item.IrisContactID } }, new { @class = "Modal" })
+                    </td>
+                </tr>
+
+                }
+            </table>
+
+        }
+
+    }
+</div>
+
+

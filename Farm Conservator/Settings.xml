@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+
+<ConservatorSettings>
+  <URLS>
+    <DataAPIURL URL = "http://localhost:54082/API" />
+    <IRISContactAPIURL URL = "http://localhost:49660/API"/>        
+  </URLS>  
+</ConservatorSettings>
