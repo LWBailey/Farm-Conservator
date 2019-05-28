@@ -63,38 +63,40 @@ namespace Farm_Conservator.Controllers
             }
         }
 
-        public async Task<ActionResult> AddContact(int farmID, int ContactIRISID, int ContactType)
+
+
+        public async Task<ActionResult> AddContact(AddContactRequest contactRequest)
         {
-            int FarmObjectID = await new FarmController().GetFarmObjectID(farmID);
 
 
             using (var Request = new HttpRequestMessage())
             {
 
-                Request.RequestUri = new Uri(APIURL + "/Contact/Remove");
+                Request.RequestUri = new Uri(APIURL + "/Contact/Add");
                 Request.Method = HttpMethod.Put;
-                Request.Content = new StringContent(JsonConvert.SerializeObject(new SLUIDBModels.RemoveContactRequest
+                Request.Content = new StringContent(JsonConvert.SerializeObject(new AddContactRequest
                 {
-                    ObjectID = FarmObjectID,
-                    IRISID = ContactIRISID
-
+                    ObjectID = contactRequest.ObjectID,
+                    IRISID = contactRequest.IRISID,
+                    RelationshipTypeID = contactRequest.RelationshipTypeID
 
                 }), Encoding.UTF8, "application/json");
 
+                int FarmID = await GetIDFromObject(contactRequest.ObjectID);
 
                 using (var response = await Client.SendAsync(Request))
                 {
                     if (response.IsSuccessStatusCode)
                     {
 
-                        return RedirectToAction("Edit", "Farm", farmID);
+                        return RedirectToAction("Edit", "Farm", new { id = FarmID });
 
                     }
 
 
                     else
                     {
-                        return RedirectToAction("Edit", "Farm", farmID);
+                        return RedirectToAction("Edit", "Farm", new { id = FarmID });
                     }
 
                 }
@@ -130,32 +132,32 @@ namespace Farm_Conservator.Controllers
 
         }
 
-        public async Task<ActionResult> StartSearch(int ObjectID)
+        public async Task<ActionResult> StartSearch(int ObjectID, [Optional] FarmModel model)
         {
-            ViewBag.ObjectID = ObjectID;          
+            ViewBag.ObjectID = ObjectID;        
+            ViewBag.ContactTypes = new List<string> { "Individual","Organisation" };
 
             return View("AddContactView");
 
         }
 
-        public async Task<ActionResult> Modal(AddContactRequest contactRequest)
-        {
-
-            List<string> RelationshipTypes = new List<string> { "Primary", "Owner", "Manager", "Other" };
-            ViewBag.RelationshipTypes = RelationshipTypes;
+        public async Task<ActionResult> SelectRelationship(AddContactRequest contactRequest)
+        {      
                                                
             return View("SelectRelationshipType", contactRequest);
 
         }
 
 
-        public async Task<ActionResult> ContactSearch(int objectID,int ContactType, string LastName, [Optional]string FirstName)
+        public async Task<ActionResult> ContactSearch(int objectID,string ContactType, string LastName, [Optional]string FirstName)
         {
 
             using (var Request = new HttpRequestMessage())
             {
 
-                Request.RequestUri = new Uri(IRISContactAPIURL + $@"/Contact?ContactType={ContactType}&Orgname={(ContactType==2?LastName:"")}&LastName={(ContactType == 1 ? LastName : "")}&FirstName={FirstName}"); //This is an abuse of interpolation, I know. Should I have written this as a POST instead?
+
+
+                Request.RequestUri = new Uri(IRISContactAPIURL + $@"/Contact?ContactType={(ContactType == "Individual"?1:2)}&Orgname={(ContactType== "Organisation"?LastName:"")}&LastName={(ContactType == "Individual" ? LastName : "")}&FirstName={FirstName}"); //This is an abuse of interpolation, I know. Should I have written this as a POST instead?
                 Request.Method = HttpMethod.Get;
 
                 using (var response = await Client.SendAsync(Request))
@@ -169,7 +171,7 @@ namespace Farm_Conservator.Controllers
                     {
 
                         ViewBag.ObjectID = objectID;
-                        
+                        ViewBag.ContactTypes = new List<string> { "Individual", "Organisation" };
 
                         return View("AddContactView", SearchResult);
 
@@ -186,6 +188,35 @@ namespace Farm_Conservator.Controllers
 
             }
         }
-      
+        public async Task<int> GetIDFromObject(int ObjectID)
+        {
+
+            string API = "http://localhost:54082/API/";
+
+            using (var Request = new HttpRequestMessage())
+            {
+
+                Request.RequestUri = new Uri(API + $"object/{ObjectID}");
+                Request.Method = HttpMethod.Get;
+
+
+                using (var response = await Client.SendAsync(Request))
+                {
+                    string content = await response.Content.ReadAsStringAsync();
+
+                    int.TryParse(content, out int FarmID);
+
+
+
+                    return FarmID;
+
+                }
+
+
+
+
+            }
+
+        }
     }
 }

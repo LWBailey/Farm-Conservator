@@ -1,10 +1,11 @@
 ﻿body {
-    padding-top: 50px;
+    padding-top: 100px;
     padding-bottom: 20px;
 }
 
 /* Set padding to keep content from hitting the edges */
 .body-content {
+    padding-top: 36px;
     padding-left: 15px;
     padding-right: 15px;
 }
@@ -21,4 +22,53 @@ input,
 select,
 textarea {
     max-width: 280px;
+}
+
+.navbar-inverse {
+    background-color: #243746;
+    height: 133px;
+    color:white;
+}
+
+.HorizonsSingleTableLine {
+    height: 42px;
+    background-color: white; 
+    color:black;
+    font-family: Calibri,Calibri,Calibri;
+    font-size:large        
+   }
+
+.AddButton {
+ 
+    background-color: #007DA5;
+    padding: 6px 12px;
+    font-size: 12px;
+    line-height: 1.5;
+    border-radius: 3px;
+    color: white;
+    text-decoration: none;
+}
+
+.DeleteButton {   
+    background-color: #919BA2;
+    padding: 6px 12px;
+    font-size: 12px;
+    line-height: 1.5;
+    border-radius: 3px;
+    color: white;
+    text-decoration: none;
+}
+
+.LinkButton {
+    background-color: #243746;
+    padding: 6px 12px;
+    font-size: 12px;
+    line-height: 1.5;
+    border-radius: 3px;
+    color: white;
+    text-decoration: none;
+}
+
+.noBorder {
+    border: none;
 }

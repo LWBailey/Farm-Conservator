@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.28307.136
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Farm Conservator", "Farm Conservator\Farm Conservator.csproj", "{45AD1B21-47EA-459F-B9D5-BDADC72A8D66}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SLUIDBModels", "..\..\..\Documents\GitHub\API\SLUI Data API\SLUIDBModels\SLUIDBModels.csproj", "{5EAADD93-F784-4D40-BEDB-C4E0EB29DD17}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{45AD1B21-47EA-459F-B9D5-BDADC72A8D66}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{45AD1B21-47EA-459F-B9D5-BDADC72A8D66}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{45AD1B21-47EA-459F-B9D5-BDADC72A8D66}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5EAADD93-F784-4D40-BEDB-C4E0EB29DD17}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5EAADD93-F784-4D40-BEDB-C4E0EB29DD17}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5EAADD93-F784-4D40-BEDB-C4E0EB29DD17}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5EAADD93-F784-4D40-BEDB-C4E0EB29DD17}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

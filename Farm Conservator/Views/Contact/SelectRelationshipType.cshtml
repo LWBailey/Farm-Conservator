@@ -1,14 +1,45 @@
-﻿@model SLUIDBModels.AddContactRequest 
+﻿@model SLUIDBModels.AddContactRequest
 
 <h3>Please select a relationship type for this contact</h3>
 
-@using (Html.BeginForm("AddContact", "Contact", FormMethod.Get))
+@using (Html.BeginForm("AddContact", "Contact", FormMethod.Post))
+
 {
 
-    @Html.DropDownListFor(m => m.RelationshipTypeID, new List<SelectListItem>
-                      { new SelectListItem{Text="Primary", Value="1"},
-                        new SelectListItem{Text="Owner", Value="2"},
-                        new SelectListItem{Text="Other", Value="3"}}, "Please select")
 
-    <input type="submit" value="Add Contact" />
-}
+<div class="form-horizontal">
+    <div class="form-group">
+        <div class="col-md-10">
+            @Html.HiddenFor(Model => Model.ObjectID)
+        </div>
+    </div>
+
+        <div class="form-group">
+            <div class="col-md-10">
+                @Html.HiddenFor(Model => Model.IRISID)
+            </div>
+        </div>
+
+
+
+        <div class="form-group">
+            <div class="col-md-10">
+                @Html.DropDownListFor(Model => Model.RelationshipTypeID, new SelectList(Model.RelationshipList, "RelationshipTypeID", "Name"), "Please choose a relationship type", new { @class = "form-control" })
+                @Html.ValidationMessageFor(Model => Model.RelationshipTypeID, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="LinkButton" />
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+    }
