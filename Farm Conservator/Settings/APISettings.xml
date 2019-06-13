@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<Settings>
+  <APISettings>
+    <API Name ="FarmAPI">
+          <BaseURL>http://DT-13420/test/SLUI/API/Farm</BaseURL>
+    </API>
+
+    <API Name ="ContactAPI">
+      <BaseURL>
+        http://DT-13420/test/SLUI/API/Contact
+      </BaseURL>
+    </API>
+
+    <API Name ="ObjectAPI">
+      <BaseURL>
+        http://DT-13420/test/SLUI/API
+      </BaseURL>
+    </API>
+  
+
+  <API Name ="IRISAPI">
+    <BaseURL>
+      http://DT-13420/test/contact/API
+    </BaseURL>
+  </API>
+  </APISettings>
+  
+</Settings>

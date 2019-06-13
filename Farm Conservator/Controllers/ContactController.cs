@@ -1,4 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿using Farm_Conservator.Models;
+using Newtonsoft.Json;
+using NLog;
 using SLUIDBModels;
 using System;
 using System.Collections.Generic;
@@ -14,9 +16,16 @@ namespace Farm_Conservator.Controllers
 {
     public class ContactController : Controller
     {
+        public static Settings Settings;
+        private static Logger logger = LogManager.GetCurrentClassLogger();
 
-        public static string APIURL = "http://localhost:54082/API";
-        public static string IRISContactAPIURL = "http://localhost:49660/API";
+
+        public ContactController()
+        {
+
+            Settings = new Settings();
+        }
+
         private static readonly HttpClient Client = new HttpClient();
 
         // GET: Contacts
@@ -24,25 +33,26 @@ namespace Farm_Conservator.Controllers
         {
             int FarmObjectID = await new FarmController().GetFarmObjectID(farmID);
 
-
+            
             using (var Request = new HttpRequestMessage())
             {
 
-                Request.RequestUri = new Uri(APIURL + "/Contact/Remove");
+                Request.RequestUri = new Uri(Settings.ContactAPI +"/Remove");
                 Request.Method = HttpMethod.Put;
-                Request.Content = new StringContent(JsonConvert.SerializeObject(new SLUIDBModels.RemoveContactRequest
+                Request.Content = new StringContent(JsonConvert.SerializeObject(new RemoveContactRequest
                 {
                     ObjectID = FarmObjectID,
                     IRISID = ContactIRISID
 
 
                 }), Encoding.UTF8, "application/json");
-
+                
 
                 using (var response = await Client.SendAsync(Request))
                 {
                     if (response.IsSuccessStatusCode)
                     {
+                        logger.Debug($"Contact {ContactIRISID} removed from object {FarmObjectID} by {System.Security.Principal.WindowsIdentity.GetCurrent().Name}");
 
                         return RedirectToAction("Edit", "Farm", new { id = farmID });
 
@@ -51,6 +61,8 @@ namespace Farm_Conservator.Controllers
 
                     else
                     {
+                        logger.Debug($"Failure when removing {ContactIRISID} from object {FarmObjectID} by {System.Security.Principal.WindowsIdentity.GetCurrent().Name}");
+
                         return RedirectToAction("Edit", "Farm", new { id = farmID });
                     }
 
@@ -72,7 +84,7 @@ namespace Farm_Conservator.Controllers
             using (var Request = new HttpRequestMessage())
             {
 
-                Request.RequestUri = new Uri(APIURL + "/Contact/Add");
+                Request.RequestUri = new Uri(Settings.ContactAPI + "/Add");
                 Request.Method = HttpMethod.Put;
                 Request.Content = new StringContent(JsonConvert.SerializeObject(new AddContactRequest
                 {
@@ -88,6 +100,7 @@ namespace Farm_Conservator.Controllers
                 {
                     if (response.IsSuccessStatusCode)
                     {
+                        logger.Debug($"Contact {contactRequest.IRISID} added to object {contactRequest.ObjectID} by {System.Security.Principal.WindowsIdentity.GetCurrent().Name}");
 
                         return RedirectToAction("Edit", "Farm", new { id = FarmID });
 
@@ -111,7 +124,7 @@ namespace Farm_Conservator.Controllers
             using (var Request = new HttpRequestMessage())
             {
 
-                Request.RequestUri = new Uri(APIURL+ "/contact/{objectID}");
+                Request.RequestUri = new Uri(Settings.ContactAPI+ "/{objectID}");
                 Request.Method = HttpMethod.Get;
 
 
@@ -157,7 +170,7 @@ namespace Farm_Conservator.Controllers
 
 
 
-                Request.RequestUri = new Uri(IRISContactAPIURL + $@"/Contact?ContactType={(ContactType == "Individual"?1:2)}&Orgname={(ContactType== "Organisation"?LastName:"")}&LastName={(ContactType == "Individual" ? LastName : "")}&FirstName={FirstName}"); //This is an abuse of interpolation, I know. Should I have written this as a POST instead?
+                Request.RequestUri = new Uri(Settings.IRISAPI + $@"/Contact?ContactType={(ContactType == "Individual"?1:2)}&Orgname={(ContactType== "Organisation"?LastName:"")}&LastName={(ContactType == "Individual" ? LastName : "")}&FirstName={FirstName}"); //This is an abuse of interpolation, I know. Should I have written this as a POST instead?
                 Request.Method = HttpMethod.Get;
 
                 using (var response = await Client.SendAsync(Request))
@@ -191,12 +204,12 @@ namespace Farm_Conservator.Controllers
         public async Task<int> GetIDFromObject(int ObjectID)
         {
 
-            string API = "http://localhost:54082/API/";
+            string API = Settings.ObjectAPI;
 
             using (var Request = new HttpRequestMessage())
             {
 
-                Request.RequestUri = new Uri(API + $"object/{ObjectID}");
+                Request.RequestUri = new Uri(API + $"/object/{ObjectID}");
                 Request.Method = HttpMethod.Get;
 
 

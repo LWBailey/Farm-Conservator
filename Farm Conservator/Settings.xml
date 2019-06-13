@@ -3,7 +3,7 @@
 
 <ConservatorSettings>
   <URLS>
-    <DataAPIURL URL = "http://localhost:54082/API" />
-    <IRISContactAPIURL URL = "http://localhost:49660/API"/>        
+    <DataAPIURL URL = "http://DT-13420/test/SLUI/API/" />
+    <IRISContactAPIURL URL = "http://DT-13420/test/Contact/API"/>        
   </URLS>  
 </ConservatorSettings>
